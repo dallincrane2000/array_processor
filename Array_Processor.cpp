@@ -27,8 +27,8 @@ void high(int &SIZE, long int numbers[], long int max);
 void total(int &SIZE, long int numbers[], long int &total_value);
 void average(int &SIZE, long int numbers[], long int &total_value, double &average);
 void std_Dev(double &average, int &count, long int numbers[]);
-void median(long int numbers[], int &count, long int max);
-void mode(long int numbers[], int &count);
+void median(long int numbers[], int &count, long int max, long int numbers_sort[]);
+void mode(long int numbers[], int &count, long int numbers_sort[]);
 
 const int ARRAY_SIZE = 500;
 
@@ -48,7 +48,7 @@ int main()
 	bool tf = true;
 	long int total_value = 0;
 	int count;
-	long int numbers[ARRAY_SIZE], max;
+	long int numbers[ARRAY_SIZE], max, numbers_sort[ARRAY_SIZE];
 	double mean;
 
 	// Loop that ends if tf == false for file validation
@@ -67,8 +67,8 @@ int main()
 			total(count, numbers, total_value);
 			average(count, numbers, total_value, mean);
 			std_Dev(mean, count, numbers);
-			median(numbers, count, max);
-			mode(numbers, count);
+			median(numbers, count, max, numbers_sort);
+			mode(numbers, count, numbers_sort);
 			tf = false;
 		} else {
 			cout << "File not found";
@@ -214,12 +214,11 @@ DESCRIPTION:       finds the median and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void median(long int numbers[], int &count, long int max)
+void median(long int numbers[], int &count, long int max, long int numbers_sort[])
 {
 	// sort from smallest to largest
 	// median is the central number in the sorted list
 	double median;
-	long int numbers_sort[count];
 
 	// Makes numbers_sort equal to numbers
 	for (int i = 0; i < count; i++)
@@ -257,23 +256,29 @@ DESCRIPTION:       finds the mode and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void mode(long int numbers[], int &count)
+void mode(long int numbers[], int &count, long int numbers_sort[])
 {
 	long int modes;
-	// mode is the number that appears the most
-	// mode can be multiple numbers if they all appear the same amount of times
+	long int modes_max;
 
 	for (int i = 0; i < count; i++)
 	{
 		int mode_count = 1;
-		while (i < count - 1 && numbers[i] == numbers[i+1])
+		// runs while i is less tan count - 1 & numbers_sort is the same as the next number in the array
+		while (i < count - 1 && numbers_sort[i] == numbers_sort[i+1])
 		{
 			mode_count++;
 			i++;
+
+			// If the count is greater than the highest number than it sets that number as the mode
+			if (mode_count > modes_max)
+			{
+				modes_max = mode_count;
+				modes = numbers_sort[i];
+			}
+			
 		}
-		cout << numbers[i] << mode_count;
 	}
-	
 	
 	cout << "Modes  are: " << modes << endl;
 }
