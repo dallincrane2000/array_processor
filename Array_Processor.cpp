@@ -208,6 +208,12 @@ void std_Dev(double &mean, int &count, long int numbers[])
 
 	cout << "Std Dev is: " << dev << endl;
 }
+/*-----------------------------------------------------------------------------
+FUNCTION:          median()
+DESCRIPTION:       finds the median and displays it
+RETURNS:           void
+NOTES:             
+------------------------------------------------------------------------------- */
 void median(long int numbers[], int &count, long int max)
 {
 	// sort from smallest to largest
@@ -245,10 +251,28 @@ void median(long int numbers[], int &count, long int max)
 	// Displays median
 	cout << "Median is: " << median << endl;
 }
-
+/*-----------------------------------------------------------------------------
+FUNCTION:          mode()
+DESCRIPTION:       finds the mode and displays it
+RETURNS:           void
+NOTES:             
+------------------------------------------------------------------------------- */
 void mode(long int numbers[], int &count)
 {
 	long int modes;
+	// mode is the number that appears the most
+	// mode can be multiple numbers if they all appear the same amount of times
+
+	for (int i = 0; i < count; i++)
+	{
+		int mode_count = 1;
+		while (i < count - 1 && numbers[i] == numbers[i+1])
+		{
+			mode_count++;
+			i++;
+		}
+		cout << numbers[i] << mode_count;
+	}
 	
 	
 	cout << "Modes  are: " << modes << endl;
