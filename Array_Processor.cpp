@@ -294,16 +294,28 @@ NOTES:
 ------------------------------------------------------------------------------- */
 void histogram(long int numbers[], int &count)
 {
+	int star = 0;
 	cout << endl << "Histogram: " << endl << endl;
 	
 
 	for (int i = 1; i < 1000; i = (i+100))
 	{
-		if (i == 901){
-			cout << setw(3) << i << "- " << (i+99) << ": " << endl;
-		} else {
-			cout << setw(4) << i << "- " << (i+100) << ": " << endl;
+		for (int n = 0; n < count; n++)
+		{
+			if (numbers[n] > i && numbers[n] < (i+100))
+			{
+				star++;
+			}
 		}
+		
+		if (i == 901){
+			cout << setw(3) << i << "- " << (i+99) << ": " << setfill ('*') << setw(star+1) << " " << endl;
+			cout << setfill(' ');
+		} else {
+			cout << setw(4) << i << "- " << (i+100) << ": " << setfill ('*') << setw(star+1) << " " << endl;
+			cout << setfill(' ');
+		}
+		star = 0;
 	}
 	
 }
