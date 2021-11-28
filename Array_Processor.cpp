@@ -29,6 +29,7 @@ void average(int &SIZE, long int numbers[], long int &total_value, double &avera
 void std_Dev(double &average, int &count, long int numbers[]);
 void median(long int numbers[], int &count, long int max, long int numbers_sort[]);
 void mode(long int numbers[], int &count, long int numbers_sort[]);
+void histogram(long int numbers[], int &count);
 
 const int ARRAY_SIZE = 500;
 
@@ -69,6 +70,7 @@ int main()
 			std_Dev(mean, count, numbers);
 			median(numbers, count, max, numbers_sort);
 			mode(numbers, count, numbers_sort);
+			histogram(numbers, count);
 			tf = false;
 		} else {
 			cout << "File not found";
@@ -281,4 +283,26 @@ void mode(long int numbers[], int &count, long int numbers_sort[])
 	}
 	
 	cout << "Modes  are: " << modes << endl;
+}
+/*-----------------------------------------------------------------------------
+FUNCTION:          histogram()
+DESCRIPTION:       finds the mode and displays it
+RETURNS:           void
+NOTES:             
+------------------------------------------------------------------------------- */
+void histogram(long int numbers[], int &count)
+{
+	long int stars = 0;
+	cout << endl << "Histogram: " << endl << endl;
+
+	// 1 - 100
+	cout << "   1- 100: ";
+	for (int i = 0; i < count; i++)
+	{
+		if (numbers[i] >= 1 && numbers[i] <= 100)
+		{
+			stars++;
+		}
+	}
+	cout << stars;
 }
