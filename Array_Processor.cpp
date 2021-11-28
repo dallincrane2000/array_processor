@@ -8,7 +8,9 @@ Author             Date               Version
 ---------------    ----------         --------------
 Dallin Gomez       2021-11-17         1.0 made a function that fills an array
 Dallin Gomez	   2021-11-20 		  2.0 Set up the different functions needed
-Dallin GOmez	   2021-11-21		  3.0 Made the functions work
+Dallin GOmez	   2021-11-21		  3.0 made low, high, total, and average functions
+Dallin Gomez	   2021-11-26		  4.0 Made std_Dev and median functions
+Dallin Gomez	   2021-11-28		  5.0 Made mode and historgram functions
 ----------------------------------------------------------------------------- */
 
 #include <iostream>
@@ -292,17 +294,16 @@ NOTES:
 ------------------------------------------------------------------------------- */
 void histogram(long int numbers[], int &count)
 {
-	long int stars = 0;
 	cout << endl << "Histogram: " << endl << endl;
+	
 
-	// 1 - 100
-	cout << "   1- 100: ";
-	for (int i = 0; i < count; i++)
+	for (int i = 1; i < 1000; i = (i+100))
 	{
-		if (numbers[i] >= 1 && numbers[i] <= 100)
-		{
-			stars++;
+		if (i == 901){
+			cout << setw(3) << i << "- " << (i+99) << ": " << endl;
+		} else {
+			cout << setw(4) << i << "- " << (i+100) << ": " << endl;
 		}
 	}
-	cout << stars;
+	
 }
