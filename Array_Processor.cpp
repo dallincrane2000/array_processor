@@ -32,6 +32,7 @@ void std_Dev(double &average, int &count, long int numbers[]);
 void median(long int numbers[], int &count, long int max, long int numbers_sort[]);
 void mode(long int numbers[], int &count, long int numbers_sort[]);
 void histogram(long int numbers[], int &count);
+void output_file();
 
 const int ARRAY_SIZE = 500;
 
@@ -75,7 +76,7 @@ int main()
 			histogram(numbers, count);
 			tf = false;
 		} else {
-			cout << "File not found";
+			cout << "File not found" << endl;
 		}
 	}
 
@@ -318,4 +319,14 @@ void histogram(long int numbers[], int &count)
 		star = 0;
 	}
 	
+}
+/*-----------------------------------------------------------------------------
+FUNCTION:          output_file()
+DESCRIPTION:       configures the output file
+RETURNS:           void
+NOTES:             
+------------------------------------------------------------------------------- */
+void output_file()
+{
+
 }
