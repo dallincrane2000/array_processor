@@ -23,20 +23,22 @@ Dallin Gomez	   2021-11-28		  5.0 Made mode and historgram functions
 using namespace std;
 
 void array_fill(ifstream &fin, int &SIZE, long int numbers[]);
-void points(int &count);
-void low(int &SIZE, long int numbers[]);
-void high(int &SIZE, long int numbers[], long int max);
-void total(int &SIZE, long int numbers[], long int &total_value);
-void average(int &SIZE, long int numbers[], long int &total_value, double &average);
-void std_Dev(double &average, int &count, long int numbers[]);
-void median(long int numbers[], int &count, long int max, long int numbers_sort[]);
-void mode(long int numbers[], int &count, long int numbers_sort[]);
+long int points(int &count);
+long int low(int &SIZE, long int numbers[]);
+long int high(int &SIZE, long int numbers[], long int max);
+long int total(int &SIZE, long int numbers[], long int &total_value);
+double average(int &SIZE, long int numbers[], long int &total_value, double &average);
+double std_Dev(double &average, int &count, long int numbers[]);
+void sorting(long int numbers[], int &count, long int numbers_sort[], long int max);
+double median(int &count, long int numbers_sort[]);
+long int mode(int &count, long int numbers_sort[]);
 void histogram(long int numbers[], int &count);
 void output_file();
 
-const int ARRAY_SIZE = 500;
 
-const string PROGRAMMER_NAME = "Dallin Gomez";		// Global constant
+// Global constant
+const int ARRAY_SIZE = 500;
+const string PROGRAMMER_NAME = "Dallin Gomez";
 
 /*-----------------------------------------------------------------------------
 FUNCTION:          main()
@@ -49,35 +51,33 @@ int main()
 {
 	ifstream fin;
 	string filename;
-	bool tf = true;
 	long int total_value = 0;
 	int count;
 	long int numbers[ARRAY_SIZE], max, numbers_sort[ARRAY_SIZE];
 	double mean;
 
-	// Loop that ends if tf == false for file validation
-	while (tf == true){
-		// Asks what the files name is and opens a file with that name
-		cout << "input file: ";
-		cin >> filename;
-		fin.open(filename);
+	// Asks what the files name is and opens a file with that name
+	cout << "input file: ";
+	cin >> filename;
+	cout << endl;
+	fin.open(filename);
 
-		// if the file exists it runs this if not it displays file not found
-		if (fin){
-			array_fill(fin, count, numbers);
-			points(count);
-			low(count, numbers);
-			high(count, numbers, max);
-			total(count, numbers, total_value);
-			average(count, numbers, total_value, mean);
-			std_Dev(mean, count, numbers);
-			median(numbers, count, max, numbers_sort);
-			mode(numbers, count, numbers_sort);
-			histogram(numbers, count);
-			tf = false;
-		} else {
-			cout << "File not found" << endl;
-		}
+	// if the file exists it runs this if not it displays file not found
+	if (fin){
+		array_fill(fin, count, numbers);
+		points(count);
+		low(count, numbers);
+		high(count, numbers, max);
+		total(count, numbers, total_value);
+		average(count, numbers, total_value, mean);
+		std_Dev(mean, count, numbers);
+		sorting(numbers, count, numbers_sort, max);
+		median(count, numbers_sort);
+		mode(count, numbers_sort);
+		histogram(numbers, count);
+		output_file();
+	} else {
+		cout << "File not found" << endl;
 	}
 
 	// closes the .txt file
@@ -114,7 +114,7 @@ DESCRIPTION:       finds the lowest value in an array and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void points(int &count)
+long int points(int &count)
 {
 	cout << "No. points: " << count << endl;
 }
@@ -125,7 +125,7 @@ DESCRIPTION:       finds the lowest value in an array and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void low(int &count, long int numbers[])
+long int low(int &count, long int numbers[])
 {
 	long int min;
 
@@ -148,7 +148,7 @@ DESCRIPTION:       finds the highest value in an array and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void high(int &count, long int numbers[], long int max)
+long int high(int &count, long int numbers[], long int max)
 {
 	// sets max to the first number of the array
 	max = numbers[0];
@@ -167,11 +167,11 @@ DESCRIPTION:       finds the total and displays it
 RETURNS:           void
 NOTES:            
 ------------------------------------------------------------------------------- */
-void total(int &count, long int numbers[], long int &total_value)
+long int total(int &count, long int numbers[], long int &total_value)
 {
 	// Adds each number to the total_value 
 	for (int i = 0; i < count; i++){
-		total_value = total_value + numbers[i];
+		total_value += numbers[i];
 	}
 
 	// Displays the total
@@ -183,7 +183,7 @@ DESCRIPTION:       finds the average and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void average(int &count, long int numbers[], long int &total_value, double &mean)
+double average(int &count, long int numbers[], long int &total_value, double &mean)
 {
 	double average;
 
@@ -201,7 +201,7 @@ DESCRIPTION:       finds the average and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void std_Dev(double &mean, int &count, long int numbers[])
+double std_Dev(double &mean, int &count, long int numbers[])
 {
 	double dev = 0;
 
@@ -214,18 +214,14 @@ void std_Dev(double &mean, int &count, long int numbers[])
 	cout << "Std Dev is: " << dev << endl;
 }
 /*-----------------------------------------------------------------------------
-FUNCTION:          median()
-DESCRIPTION:       finds the median and displays it
+FUNCTION:          sorting()
+DESCRIPTION:       bubble sorts the code
 RETURNS:           void
-NOTES:             
+NOTES:             bubble search from book page: 477.
 ------------------------------------------------------------------------------- */
-void median(long int numbers[], int &count, long int max, long int numbers_sort[])
+void sorting(long int numbers[], int &count, long int numbers_sort[], long int max)
 {
-	// sort from smallest to largest
-	// median is the central number in the sorted list
-	double median;
-
-	// Makes numbers_sort equal to numbers
+		// Makes numbers_sort equal to numbers
 	for (int i = 0; i < count; i++)
 	{
 		numbers_sort[i] = numbers[i];
@@ -242,6 +238,16 @@ void median(long int numbers[], int &count, long int max, long int numbers_sort[
 			}
 		}
 	}
+}
+/*-----------------------------------------------------------------------------
+FUNCTION:          median()
+DESCRIPTION:       finds the median and displays it
+RETURNS:           void
+NOTES:              
+------------------------------------------------------------------------------- */
+double median(int &count, long int numbers_sort[])
+{
+	double median;
 
 	// Calculates median from the sorted data
 	if((count/2) % 2 == 0){
@@ -253,7 +259,7 @@ void median(long int numbers[], int &count, long int max, long int numbers_sort[
 	}
 	
 	// Displays median
-	cout << "Median is: " << median << endl;
+	cout << "Median  is: " << median << endl;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          mode()
@@ -261,31 +267,35 @@ DESCRIPTION:       finds the mode and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void mode(long int numbers[], int &count, long int numbers_sort[])
+long int mode(int &count, long int numbers_sort[])
 {
-	long int modes;
+	long int modes[ARRAY_SIZE];
 	long int modes_max;
-
+	
 	for (int i = 0; i < count; i++)
 	{
 		int mode_count = 1;
-		// runs while i is less tan count - 1 & numbers_sort is the same as the next number in the array
-		while (i < count - 1 && numbers_sort[i] == numbers_sort[i+1])
+		//Runs while numbers_sort is the same as the next number in the array
+		while (numbers_sort[i] == numbers_sort[i+1])
 		{
 			mode_count++;
 			i++;
 
-			// If the count is greater than the highest number than it sets that number as the mode
-			if (mode_count > modes_max)
+			// checks if the value that mode_count gets to is higher than the previous high
+			if (mode_count >= modes_max)
 			{
 				modes_max = mode_count;
-				modes = numbers_sort[i];
+				for (int n = 0; n < count; n++){
+					modes[n] = numbers_sort[i];
+				}
 			}
-			
 		}
 	}
-	
-	cout << "Modes  are: " << modes << endl;
+	cout << "Modes  are: ";
+	for (int m = 0; m < count; m++){
+		cout << modes[m] << endl;
+	}
+	cout << endl;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          histogram()
@@ -318,7 +328,6 @@ void histogram(long int numbers[], int &count)
 		}
 		star = 0;
 	}
-	
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          output_file()
@@ -328,5 +337,11 @@ NOTES:
 ------------------------------------------------------------------------------- */
 void output_file()
 {
+	string out_filename;
+	ofstream fout;
 
+	cout << endl << "Output filename: ";
+	cin >> out_filename;
+	cout << endl;
+	fout.open(out_filename);
 }
