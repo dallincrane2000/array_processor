@@ -293,36 +293,12 @@ NOTES:             need help not done
 ------------------------------------------------------------------------------- */
 long int mode(int &count, long int numbers_sort[])
 {
-	int modes[count] = {0};
-	//long int modes;
-	long int modes_max = 0;
-	
-	for (int i = 0; i < (count-1); i++){
-		modes[i] = 1;
 
-		//Runs while numbers_sort is the same as the next number in the array
-		while (numbers_sort[i] == numbers_sort[i+1]){
-			modes[i]++;
-			i++;
-			
-			// Checks if the value that mode_count gets to is higher than the previous high
-			if (modes[i] > modes_max){
-				modes_max = modes[i];
-			}
-		}
-	}
+
 
 
 	cout << "modes  are: ";
 
-	for (int n = 0; n < count; n++){
-		if (modes_max == modes[n]){
-			cout << numbers_sort[n] << " ";
-		}
-	}
-
-	cout << endl;
-}
 /*-----------------------------------------------------------------------------
 FUNCTION:          histogram()
 DESCRIPTION:       finds the mode and displays it
