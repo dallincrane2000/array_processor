@@ -19,6 +19,7 @@ Dallin Gomez	   2021-11-28		  5.0 Made mode and historgram functions
 #include <fstream>
 #include <math.h>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -32,9 +33,9 @@ double std_Dev(double &average, int &count, long int numbers[]);
 void sorting(long int numbers[], int &count, long int numbers_sort[], long int max);
 double median(int &count, long int numbers_sort[]);
 long int mode(int &count, long int numbers_sort[]);
-void histogram(long int numbers[], int &count);
-void output_file();
-
+void histogram(long int numbers[], int &count, ostream &out);
+void output_file(long int points_return, long int low_return, long int high_return, long int total_return, double average_return, double std_Dev_return, double median_return, long int modes_return, ostream &out);
+void file_setup(ofstream &fout);
 
 // Global constant
 const int ARRAY_SIZE = 500;
@@ -50,11 +51,14 @@ NOTES:
 int main()
 {
 	ifstream fin;
+	ofstream fout;
 	string filename;
 	long int total_value = 0;
 	int count;
 	long int numbers[ARRAY_SIZE], max, numbers_sort[ARRAY_SIZE];
 	double mean;
+	long int points_return, low_return, high_return, total_return, modes_return;
+	double median_return, std_Dev_return, average_return;
 
 	// Asks what the files name is and opens a file with that name
 	cout << "input file: ";
@@ -65,23 +69,26 @@ int main()
 	// if the file exists it runs this if not it displays file not found
 	if (fin){
 		array_fill(fin, count, numbers);
-		points(count);
-		low(count, numbers);
-		high(count, numbers, max);
-		total(count, numbers, total_value);
-		average(count, numbers, total_value, mean);
-		std_Dev(mean, count, numbers);
+		points_return = points(count);
+		low_return = low(count, numbers);
+		high_return = high(count, numbers, max);
+		total_return = total(count, numbers, total_value);
+		average_return = average(count, numbers, total_value, mean);
+		std_Dev_return = std_Dev(mean, count, numbers);
 		sorting(numbers, count, numbers_sort, max);
-		median(count, numbers_sort);
-		mode(count, numbers_sort);
-		histogram(numbers, count);
-		output_file();
+		median_return = median(count, numbers_sort);
+		modes_return = mode(count, numbers_sort);
+		histogram(numbers, count, cout);
+		file_setup(fout);
+		output_file(points_return, low_return, high_return, total_return, average_return, std_Dev_return, median_return, modes_return, fout);
+		histogram(numbers, count, fout);
 	} else {
 		cout << "File not found" << endl;
 	}
 
 	// closes the .txt file
 	fin.close();
+	fout.close();
 
 	cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
 	cout << __DATE__ << "  " __TIME__ << endl;
@@ -90,6 +97,9 @@ int main()
 	system("pause");
 
 	return 0;
+	// Make new function that take all of the data that each of the other functions return
+	// the new functino takes all of the other outputs as pass by reference and also takes an ostream that has cout and fout
+	
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          array_fill()
@@ -117,6 +127,8 @@ NOTES:
 long int points(int &count)
 {
 	cout << "No. points: " << count << endl;
+
+	return count;
 }
 
 /*-----------------------------------------------------------------------------
@@ -141,6 +153,8 @@ long int low(int &count, long int numbers[])
 
 	// Displays the min
 	cout << "The Min is: " << min << endl;
+
+	return min;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          high()
@@ -160,6 +174,8 @@ long int high(int &count, long int numbers[], long int max)
 		}
 	}
 	cout << "The Max is: " << max << endl;
+
+	return max;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          total()
@@ -176,6 +192,8 @@ long int total(int &count, long int numbers[], long int &total_value)
 
 	// Displays the total
 	cout << "Sum  Total: " << total_value << endl;
+
+	return total_value;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          average()
@@ -192,6 +210,8 @@ double average(int &count, long int numbers[], long int &total_value, double &me
 
 	// Displays the average
 	cout << "The Avg is: " << average << endl;
+
+	return average;
 
 	mean = average;
 }
@@ -212,6 +232,8 @@ double std_Dev(double &mean, int &count, long int numbers[])
 	dev = sqrt(dev/count);
 
 	cout << "Std Dev is: " << dev << endl;
+
+	return dev;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          sorting()
@@ -243,7 +265,7 @@ void sorting(long int numbers[], int &count, long int numbers_sort[], long int m
 FUNCTION:          median()
 DESCRIPTION:       finds the median and displays it
 RETURNS:           void
-NOTES:              
+NOTES:             
 ------------------------------------------------------------------------------- */
 double median(int &count, long int numbers_sort[])
 {
@@ -260,41 +282,45 @@ double median(int &count, long int numbers_sort[])
 	
 	// Displays median
 	cout << "Median  is: " << median << endl;
+
+	return median;
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          mode()
 DESCRIPTION:       finds the mode and displays it
 RETURNS:           void
-NOTES:             
+NOTES:             need help not done
 ------------------------------------------------------------------------------- */
 long int mode(int &count, long int numbers_sort[])
 {
-	long int modes[ARRAY_SIZE];
-	long int modes_max;
+	int modes[count] = {0};
+	//long int modes;
+	long int modes_max = 0;
 	
-	for (int i = 0; i < count; i++)
-	{
-		int mode_count = 1;
-		//Runs while numbers_sort is the same as the next number in the array
-		while (numbers_sort[i] == numbers_sort[i+1])
-		{
-			mode_count++;
-			i++;
+	for (int i = 0; i < (count-1); i++){
+		modes[i] = 1;
 
-			// checks if the value that mode_count gets to is higher than the previous high
-			if (mode_count >= modes_max)
-			{
-				modes_max = mode_count;
-				for (int n = 0; n < count; n++){
-					modes[n] = numbers_sort[i];
-				}
+		//Runs while numbers_sort is the same as the next number in the array
+		while (numbers_sort[i] == numbers_sort[i+1]){
+			modes[i]++;
+			i++;
+			
+			// Checks if the value that mode_count gets to is higher than the previous high
+			if (modes[i] > modes_max){
+				modes_max = modes[i];
 			}
 		}
 	}
-	cout << "Modes  are: ";
-	for (int m = 0; m < count; m++){
-		cout << modes[m] << endl;
+
+
+	cout << "modes  are: ";
+
+	for (int n = 0; n < count; n++){
+		if (modes_max == modes[n]){
+			cout << numbers_sort[n] << " ";
+		}
 	}
+
 	cout << endl;
 }
 /*-----------------------------------------------------------------------------
@@ -303,10 +329,10 @@ DESCRIPTION:       finds the mode and displays it
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void histogram(long int numbers[], int &count)
+void histogram(long int numbers[], int &count, ostream &out)
 {
 	int star = 0;
-	cout << endl << "Histogram: " << endl << endl;
+	out << endl << "Histogram: " << endl << endl;
 	
 
 	for (int i = 1; i < 1000; i = (i+100))
@@ -320,25 +346,41 @@ void histogram(long int numbers[], int &count)
 		}
 		
 		if (i == 901){
-			cout << setw(3) << i << "- " << (i+99) << ": " << setfill ('*') << setw(star+1) << " " << endl;
-			cout << setfill(' ');
+			out << setw(3) << i << "- " << (i+99) << ": " << setfill ('*') << setw(star+1) << " " << endl;
+			out << setfill(' ');
 		} else {
-			cout << setw(4) << i << "- " << (i+100) << ": " << setfill ('*') << setw(star+1) << " " << endl;
-			cout << setfill(' ');
+			out << setw(4) << i << "- " << (i+100) << ": " << setfill ('*') << setw(star+1) << " " << endl;
+			out << setfill(' ');
 		}
 		star = 0;
 	}
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          output_file()
+DESCRIPTION:       sends all of the data to the output file
+RETURNS:           void
+NOTES:             
+------------------------------------------------------------------------------- */
+void output_file(long int points_return, long int low_return, long int high_return, long int total_return, double average_return, double std_Dev_return, double median_return, long int modes_return, ostream &out)
+{
+	out << "No. points: " << points_return << endl;
+	out << "The Min is: " << low_return << endl;
+	out << "The Max is: " << high_return << endl;
+	out << "Sum  Total: " << total_return << endl;
+	out << "The Avg is: " << average_return << endl;
+	out << "Std Dev is: " << std_Dev_return << endl;
+	out << "Median  is: " << median_return << endl;
+	out << "Modes  are: " << modes_return << endl;
+}
+/*-----------------------------------------------------------------------------
+FUNCTION:          file_setup()
 DESCRIPTION:       configures the output file
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
-void output_file()
+void file_setup(ofstream &fout)
 {
 	string out_filename;
-	ofstream fout;
 
 	cout << endl << "Output filename: ";
 	cin >> out_filename;
