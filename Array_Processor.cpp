@@ -100,15 +100,13 @@ int main()
 	system("pause");
 
 	return 0;
-	// Make new function that take all of the data that each of the other functions return
-	// the new functino takes all of the other outputs as pass by reference and also takes an ostream that has cout and fout
-	
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          array_fill()
 DESCRIPTION:       fills the array with the values in the .txt file
 RETURNS:           void
-NOTES:             got help from http://www.cplusplus.com/forum/beginner/115599/ & the book pg. 283
+NOTES:             got help from http://www.cplusplus.com/forum/beginner/115599/
+c++ from control structures through objects by Tony Gaddis page: 283.
 ------------------------------------------------------------------------------- */
 void array_fill(ifstream &fin, int &count, long int numbers[])
 {
@@ -124,7 +122,7 @@ void array_fill(ifstream &fin, int &count, long int numbers[])
 /*-----------------------------------------------------------------------------
 FUNCTION:          points()
 DESCRIPTION:       finds the lowest value in an array and displays it
-RETURNS:           void
+RETURNS:           long int
 NOTES:             
 ------------------------------------------------------------------------------- */
 long int points(int &count)
@@ -137,7 +135,7 @@ long int points(int &count)
 /*-----------------------------------------------------------------------------
 FUNCTION:          low()
 DESCRIPTION:       finds the lowest value in an array and displays it
-RETURNS:           void
+RETURNS:           long int
 NOTES:             
 ------------------------------------------------------------------------------- */
 long int low(int &count, long int numbers[])
@@ -162,7 +160,7 @@ long int low(int &count, long int numbers[])
 /*-----------------------------------------------------------------------------
 FUNCTION:          high()
 DESCRIPTION:       finds the highest value in an array and displays it
-RETURNS:           void
+RETURNS:           long int
 NOTES:             
 ------------------------------------------------------------------------------- */
 long int high(int &count, long int numbers[], long int max)
@@ -183,7 +181,7 @@ long int high(int &count, long int numbers[], long int max)
 /*-----------------------------------------------------------------------------
 FUNCTION:          total()
 DESCRIPTION:       finds the total and displays it
-RETURNS:           void
+RETURNS:           long int
 NOTES:            
 ------------------------------------------------------------------------------- */
 long int total(int &count, long int numbers[], long int &total_value)
@@ -201,7 +199,7 @@ long int total(int &count, long int numbers[], long int &total_value)
 /*-----------------------------------------------------------------------------
 FUNCTION:          average()
 DESCRIPTION:       finds the average and displays it
-RETURNS:           void
+RETURNS:           double
 NOTES:             
 ------------------------------------------------------------------------------- */
 double average(int &count, long int numbers[], long int &total_value, double &mean)
@@ -221,7 +219,7 @@ double average(int &count, long int numbers[], long int &total_value, double &me
 /*-----------------------------------------------------------------------------
 FUNCTION:          std_Dev()
 DESCRIPTION:       finds the average and displays it
-RETURNS:           void
+RETURNS:           double
 NOTES:             
 ------------------------------------------------------------------------------- */
 double std_Dev(double &mean, int &count, long int numbers[])
@@ -242,7 +240,8 @@ double std_Dev(double &mean, int &count, long int numbers[])
 FUNCTION:          sorting()
 DESCRIPTION:       bubble sorts the code
 RETURNS:           void
-NOTES:             bubble search from book page: 477.
+NOTES:             bubble search from 
+c++ from control structures through objects by Tony Gaddis page: 477.
 ------------------------------------------------------------------------------- */
 void sorting(long int numbers[], int &count, long int numbers_sort[], long int max)
 {
@@ -267,7 +266,7 @@ void sorting(long int numbers[], int &count, long int numbers_sort[], long int m
 /*-----------------------------------------------------------------------------
 FUNCTION:          median()
 DESCRIPTION:       finds the median and displays it
-RETURNS:           void
+RETURNS:           double
 NOTES:             
 ------------------------------------------------------------------------------- */
 double median(int &count, long int numbers_sort[])
@@ -291,8 +290,9 @@ double median(int &count, long int numbers_sort[])
 /*-----------------------------------------------------------------------------
 FUNCTION:          mode()
 DESCRIPTION:       finds the mode and displays it
-RETURNS:           void
-NOTES:             need help not done
+RETURNS:           long int
+NOTES:             max_element from https://www.cplusplus.com/reference/algorithm/max_element/
+unique from https://www.cplusplus.com/reference/algorithm/unique/?kw=unique
 ------------------------------------------------------------------------------- */
 long int mode(int &count, long int numbers_sort[], ostream &out)
 {
@@ -380,7 +380,7 @@ void histogram(long int numbers[], int &count, ostream &out)
 }
 /*-----------------------------------------------------------------------------
 FUNCTION:          output_file()
-DESCRIPTION:       sends all of the data to the output file
+DESCRIPTION:       sends data to the output file
 RETURNS:           void
 NOTES:             
 ------------------------------------------------------------------------------- */
